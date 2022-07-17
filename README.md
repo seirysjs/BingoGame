@@ -1,6 +1,8 @@
 # BingoGame
 Basic Bingo Game in C# using .NET (6.0).
 
+![image](https://user-images.githubusercontent.com/28308881/179389721-df136dbf-b87a-4ba6-a94b-6982e71bf321.png)
+
 The Game of Bingo is defined as a Game of chance in which Balls are drawn from a container that contains Balls numbered without repetition. Each match of Ball's and Ticket's numbers is marked on Player's Bingo Card.
 
 Rules:
@@ -16,3 +18,9 @@ Task:
 1. Show generated Bingo Card;
 2. Show drawn Balls;
 3. Show calculated prize as Score;
+
+Screenshots:
+
+![image](https://user-images.githubusercontent.com/28308881/179389610-6e90023f-bc85-4b97-98ee-df98e93e1a23.png)
+![image](https://user-images.githubusercontent.com/28308881/179389572-5847e31a-35fa-4d0b-ad75-6952114879f6.png)
+![image](https://user-images.githubusercontent.com/28308881/179389676-e3676197-c299-4c1a-be96-9679d34df38a.png)
