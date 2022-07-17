@@ -12,11 +12,10 @@ namespace BingoGame
         {
             Console.WriteLine("\n* B I N G O * Game!");
 
-            
+            GameTicket bingoTicket = new GameTicket(GameInstance.BallsInstance.GameBalls, GameInstance.RoundRules.RowsPerTicket);
 
             DrawBalls ballsDrawInstance = new DrawBalls(GameInstance.RoundRules.BallsCount, GameInstance.RoundRules.BallsDrawn);
 
-            GameTicket bingoTicket = new GameTicket(GameInstance.BallsInstance.GameBalls, GameInstance.RoundRules.RowsPerTicket);
             int ticketScore = bingoTicket.CheckTicket(ballsDrawInstance.BallsDrawn);
             Console.WriteLine("\n\n Total Score: {0}!", ticketScore);
 
