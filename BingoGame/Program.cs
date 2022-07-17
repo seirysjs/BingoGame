@@ -12,21 +12,15 @@ namespace BingoGame
         {
             Console.WriteLine("\n* B I N G O * Game!");
 
-            GameTicket bingoTicket = new GameTicket(GameInstance.BallsInstance.GameBalls, GameInstance.RoundRules.RowsPerTicket);
-
-            Console.WriteLine("\n Bingo Ticket ({0} Rows)", bingoTicket.TicketRows.Count);
-            Console.Write("[#]  B   I   N   G   O");
-            for (int indexTicketRow = 0; indexTicketRow < bingoTicket.TicketRows.Count; indexTicketRow++)
-            {
-                int[] ticketRow = bingoTicket.TicketRows[indexTicketRow];
-                Console.Write("\n[{0}] ", (indexTicketRow + 1));
-                if (ticketRow[0] < 10) Console.Write(" ");
-
-                foreach (int ballNumber in ticketRow) Console.Write(ballNumber + "  ");
-            }
-            Console.WriteLine();
+            
 
             DrawBalls ballsDrawInstance = new DrawBalls(GameInstance.RoundRules.BallsCount, GameInstance.RoundRules.BallsDrawn);
+
+            GameTicket bingoTicket = new GameTicket(GameInstance.BallsInstance.GameBalls, GameInstance.RoundRules.RowsPerTicket);
+            int ticketScore = bingoTicket.CheckTicket(ballsDrawInstance.BallsDrawn);
+            Console.WriteLine("\n\n Total Score: {0}!", ticketScore);
+
+            
 
             Console.WriteLine("\n");
             Console.ReadLine();
@@ -156,7 +150,7 @@ namespace BingoGame
             foreach (LetterBalls letterBalls in gameBalls.Balls)
             {
                 string letter = letterBalls.Letter;
-                List<int> letterNumbers = letterBalls.Balls; 
+                List<int> letterNumbers = new List<int> (letterBalls.Balls); 
                 List<int> selectedNumbers = new List<int> { };
 
                 // Pick ball numbers for each Row for the letter, ex.: (B)
@@ -196,6 +190,50 @@ namespace BingoGame
                 TicketRows.Add(ticketRow.ToArray());
             }
         }
+
+        public int CheckTicket(List<int> ballsList)
+        {
+            if (TicketRows is null) return 0;
+
+            int rowMatchesInTicket = 0;
+            Console.WriteLine("\n Bingo Ticket ({0} Rows)", TicketRows.Count);
+            Console.Write("[#]  B   I   N   G   O");
+            
+            for (int indexTicketRow = 0; indexTicketRow < TicketRows.Count; indexTicketRow++)
+            {
+                int ballMatchesInRow = 0;
+                int[] ticketRow = TicketRows[indexTicketRow];
+                Console.Write("\n[{0}] ", (indexTicketRow + 1));
+                if (ticketRow[0] < 10) Console.Write(" ");
+
+                foreach (int ballNumber in TicketRows[indexTicketRow])
+                {
+                    int numberInList = ballsList.IndexOf(ballNumber);
+
+                    if (numberInList == -1)
+                        Console.Write("{0}  ", ballNumber);
+
+                    if (numberInList != -1)
+                    {
+                        ballMatchesInRow++;
+                        Console.Write("{0}* ", ballNumber);
+                    }
+                }
+
+                if (ballMatchesInRow == 5)
+                {
+                    Console.Write(" ! (Score +100)");
+                    rowMatchesInTicket++;
+                }
+            }
+
+            if (rowMatchesInTicket == TicketRows.Count)
+            {
+                Console.Write("\n\n * B I N G O * !!! (Score 1500 MAX)");
+                return 1500;
+            }
+            return rowMatchesInTicket * 100;
+        }
     }
 
     public class DrawBalls
@@ -216,7 +254,7 @@ namespace BingoGame
                 BallsContainer.RemoveAt(indexBallContainer);
             }
 
-            Console.WriteLine("\nDrawn Balls [{0}]: ", ballsDrawn);
+            Console.WriteLine("\n Drawn Balls [{0}]: ", ballsDrawn);
             for (int indexBallDraw = 0; indexBallDraw < BallsDrawn.Count; indexBallDraw++)
             {
                 int ballNumber = BallsDrawn[indexBallDraw];
