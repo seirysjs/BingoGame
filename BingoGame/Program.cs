@@ -12,7 +12,8 @@ namespace BingoGame
         {
             Console.WriteLine("\n* B I N G O * Game!");
 
-            GameTicket bingoTicket = new GameTicket(GameInstance.BallsInstance.GameBalls, GameInstance.RoundRules.RowsPerTicket);            
+            GameTicket bingoTicket = new GameTicket(GameInstance.BallsInstance.GameBalls, GameInstance.RoundRules.RowsPerTicket);
+
             Console.WriteLine("\n Bingo Ticket ({0} Rows)", bingoTicket.TicketRows.Count);
             Console.Write("[#]  B   I   N   G   O");
             for (int indexTicketRow = 0; indexTicketRow < bingoTicket.TicketRows.Count; indexTicketRow++)
@@ -23,6 +24,9 @@ namespace BingoGame
 
                 foreach (int ballNumber in ticketRow) Console.Write(ballNumber + "  ");
             }
+            Console.WriteLine();
+
+            DrawBalls ballsDrawInstance = new DrawBalls(GameInstance.RoundRules.BallsCount, GameInstance.RoundRules.BallsDrawn);
 
             Console.WriteLine("\n");
             Console.ReadLine();
@@ -191,6 +195,35 @@ namespace BingoGame
                 // Add formed B-I-N-G-O Numbers Row to Ticket Row List
                 TicketRows.Add(ticketRow.ToArray());
             }
+        }
+    }
+
+    public class DrawBalls
+    {
+        public List<int> BallsContainer = new List<int>();
+        public List<int> BallsDrawn = new List<int>();
+        public DrawBalls(int ballsCount, int ballsDrawn)
+        {
+            for (int indexBallNumber = 1; indexBallNumber <= ballsCount; indexBallNumber++) BallsContainer.Add(indexBallNumber);
+
+            Random rnd = new Random();
+            for (int indexBallDraw = 1; indexBallDraw <= ballsDrawn; indexBallDraw++)
+            {
+                int numbersLeftCount = BallsContainer.Count;
+                int indexBallContainer = rnd.Next(numbersLeftCount);
+                int ballNumber = BallsContainer[indexBallContainer];
+                BallsDrawn.Add(ballNumber);
+                BallsContainer.RemoveAt(indexBallContainer);
+            }
+
+            Console.WriteLine("\nDrawn Balls [{0}]: ", ballsDrawn);
+            for (int indexBallDraw = 0; indexBallDraw < BallsDrawn.Count; indexBallDraw++)
+            {
+                int ballNumber = BallsDrawn[indexBallDraw];
+                Console.Write("({0})  ", ballNumber);
+                if ((indexBallDraw+1) % 10 == 0 && indexBallDraw != 0) Console.WriteLine();
+            }
+
         }
     }
 }
